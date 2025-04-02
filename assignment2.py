@@ -127,10 +127,9 @@ if submit_train:
         y_all_encoded = y_all.values
         class_names = None
     test_size = test_size_percent / 100.0
-    stratify = y_all_encoded if is_classification else None
+    stratify_param = y_all_encoded if is_classification and len(np.unique(y_all_encoded)) > 1 else None
     X_train, X_test, y_train, y_test = train_test_split(
-        X_all_encoded, y_all_encoded, test_size=test_size, stratify=stratify, random_state=42
-    )
+    X_all_encoded, y_all_encoded, test_size=test_size, stratify=stratify_param, random_state=42)
     # Define model based on selection
     model = None
     if model_choice == "Random Forest":
