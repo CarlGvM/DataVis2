@@ -127,7 +127,20 @@ if submit_train:
         y_all_encoded = y_all.values
         class_names = None
     test_size = test_size_percent / 100.0
-    stratify_param = y_all_encoded if is_classification and len(np.unique(y_all_encoded)) > 1 else None
+
+    if is_classification:
+        # Check if any class has fewer than 2 samples
+        unique, counts = np.unique(y_all_encoded, return_counts=True)
+     
+        if counts.min() < 2:
+            stratify_param = None
+            st.warning("Stratification disabled because at least one class has fewer than 2 samples.")
+        else:
+            stratify_param = y_all_encoded
+    else:
+        stratify_param = None
+
+        
     X_train, X_test, y_train, y_test = train_test_split(
         X_all_encoded, y_all_encoded, test_size=test_size, stratify=stratify_param, random_state=42
     )
