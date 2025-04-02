@@ -207,7 +207,8 @@ if submit_train:
             st.session_state.roc_auc = None
     else:
         y_pred = model.predict(X_test)
-        rmse_val = mean_squared_error(y_test, y_pred, squared=False)
+        mse_val = mean_squared_error(y_test, y_pred)
+        rmse_val = np.sqrt(mse_val)   
         r2_val = r2_score(y_test, y_pred)
         st.session_state.rmse = rmse_val
         st.session_state.r2 = r2_val
